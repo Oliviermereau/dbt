@@ -4,8 +4,8 @@ models:
   - name: customers
     description: One record per customer
     columns:
-      - name: customer_id
-        description: Primary key
+      - name: amount
+        description: total spends by customer
         tests:
           - unique
           - not_null

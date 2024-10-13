@@ -4,12 +4,6 @@ with customers as (
 
 ),
 
-orders as (
-
-    select * from {{ ref('stg_orders') }}
-
-),
-
 customer_orders as (
 
     select
@@ -17,22 +11,12 @@ customer_orders as (
 
         min(order_date) as first_order_date,
         max(order_date) as most_recent_order_date,
-        count(order_id) as number_of_orders
-
-    from orders
+        count(order_id) as number_of_orders,
+        sum(amount) as lifetime_value
+    from {{ ref('fct_orders')}}
 
     group by 1
 
-),
-
-ltv as (
-
-    select
-        customer_id,
-        sum (amount) as lifetime_value
-    
-    from {{ ref('fct_orders') }}
-    group by customer_id
 ),
 
 final as (
@@ -49,7 +33,6 @@ final as (
     from customers
 
     left join customer_orders using (customer_id)
-    left join ltv using (customer_id)
 
 )
 

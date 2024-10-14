@@ -1,1 +1,0 @@
-select sum(lifetime_value) from {{ref("customers")}}
